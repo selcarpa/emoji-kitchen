@@ -58,13 +58,18 @@ export default class Kitchen extends React.Component<
 
     // Neither are selected, show left list, empty middle list, and disable right list
     if (selectedLeftEmoji === "" && selectedRightEmoji === "") {
-      leftList = this.getEmojiImageList(undefined, this.handleLeftEmojiClicked);
+      leftList = this.getEmojiImageList(
+        true,
+        undefined,
+        this.handleLeftEmojiClicked
+      );
       middleList = <div></div>;
-      rightList = this.getEmojiImageList();
+      rightList = this.getEmojiImageList(false);
     }
     // Left emoji is selected, but not right, disable the right list appropriately
     else if (selectedLeftEmoji !== "" && selectedRightEmoji === "") {
       leftList = this.getEmojiImageList(
+        true,
         selectedLeftEmoji,
         this.handleLeftEmojiClicked
       );
@@ -93,6 +98,7 @@ export default class Kitchen extends React.Component<
         });
 
       rightList = this.getEmojiImageList(
+        false,
         undefined,
         this.handleRightEmojiClicked,
         selectedLeftEmoji
@@ -107,6 +113,7 @@ export default class Kitchen extends React.Component<
       );
 
       leftList = this.getEmojiImageList(
+        true,
         selectedLeftEmoji,
         this.handleLeftEmojiClicked
       );
@@ -121,6 +128,7 @@ export default class Kitchen extends React.Component<
       );
 
       rightList = this.getEmojiImageList(
+        false,
         selectedRightEmoji,
         this.handleRightEmojiClicked,
         selectedLeftEmoji
@@ -324,6 +332,7 @@ export default class Kitchen extends React.Component<
   }
 
   getEmojiImageList(
+    left?: boolean,
     selectedEmoji?: string,
     onClickHandler?: (
       clickedEmoji: string,
@@ -359,6 +368,13 @@ export default class Kitchen extends React.Component<
         onClick = () => {};
         opacity = 0.2;
       }
+      var id = "";
+
+      if (left) {
+        id = "left_emoji_" + e;
+      } else {
+        id = "right_emoji_" + e;
+      }
 
       return (
         <div
@@ -387,6 +403,7 @@ export default class Kitchen extends React.Component<
               width="32px"
               height="32px"
               alt={e}
+              id={id}
               src={`https://raw.githubusercontent.com/googlefonts/noto-emoji/main/svg/emoji_u${e
                 .split("-")
                 .filter((x) => x !== "fe0f")
